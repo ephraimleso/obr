@@ -208,14 +208,5 @@ $apps_result = mysqli_query($db, $apps_query);
 </html>
 
 <script type="text/javascript">
-  function cancelApplication(val){    
-   $.ajax({
-        type: "POST",
-        url: "cancelApplication.php",
-        data: {applicationId:val},
-        success: function(data){
-          location.href = "index.php";
-        }
-    });
-  }
+  
 </script>
