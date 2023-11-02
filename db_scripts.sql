@@ -91,6 +91,24 @@ CREATE TABLE `triptypes` (
 
 
 
-
+DELIMITER $$
+CREATE PROCEDURE `get_applications`(IN `parentId` INT)
+BEGIN
+	SELECT 
+	l.NameAndSurname, s.Description as Status_description, r1.Name as Pickup, r2.Name as DropOff,
+	sr1.Name as Pickup_bus_route_number,sr2.Name as Dropoff_bus_route_number, t.*
+	FROM transportapplications t, learners l, statuses s, 
+	(select * from routes) r1, (select * from routes) r2,
+	(select * from subroutes where TripTypeId = 1) sr1, 
+	(select * from subroutes where TripTypeId = 2) sr2
+	Where t.ParentId = parentId
+	and l.ID = t.LearnerId
+	and s.ID = t.StatusId
+	and r1.ID = t.RouteId_pickup
+	and r2.ID = t.RouteId_dropoff
+	and sr1.ID = t.SubRouteId_pickup
+	and sr2.ID = t.SubRouteId_dropoff;
+END$$
+DELIMITER ;
 
 
